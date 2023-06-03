@@ -1,3 +1,5 @@
+"""Telegram-бот для получения случайного изображения кота."""
+
 import logging
 import os
 
@@ -20,6 +22,7 @@ URL = 'https://api.thecatapi.com/v1/images/search'
 
 
 def get_new_image():
+    """."""
     try:
         response = requests.get(URL)
     except Exception as error:
@@ -33,11 +36,13 @@ def get_new_image():
 
 
 def new_cat(update, context):
+    """Получения информации о чате и получение нового фото кота."""
     chat = update.effective_chat
     context.bot.send_photo(chat.id, get_new_image())
 
 
 def wake_up(update, context):
+    """Отправка сообщения и фотографии при запуске бота."""
     chat = update.effective_chat
     name = update.message.chat.first_name
     button = ReplyKeyboardMarkup([['/newcat']], resize_keyboard=True)
@@ -52,6 +57,7 @@ def wake_up(update, context):
 
 
 def main():
+    """Главная функция."""
     updater = Updater(token=secret_token)
 
     updater.dispatcher.add_handler(CommandHandler('start', wake_up))
