@@ -22,7 +22,14 @@ URL = 'https://api.thecatapi.com/v1/images/search'
 
 
 def get_new_image():
-    """."""
+    """Получает случайное изображение кота с использованием The Cat API.
+
+    Returns:
+        str: URL изображения кота.
+    Raises:
+        Exception: В случае ошибки при запросе изображения,
+        используется The Dog API в качестве резервного варианта.
+    """
     try:
         response = requests.get(URL)
     except Exception as error:
@@ -36,13 +43,33 @@ def get_new_image():
 
 
 def new_cat(update, context):
-    """Получения информации о чате и получение нового фото кота."""
+    """
+    Отправляет новое случайное изображение кота в чат.
+
+    Args:
+        update (:class:`telegram.Update`): Объект, представляющий входящее
+            обновление.
+        context (:class:`telegram.ext.CallbackContext`): Контекст,
+            предоставляющий информацию и методы для взаимодействия
+            с Telegram API.
+    """
     chat = update.effective_chat
     context.bot.send_photo(chat.id, get_new_image())
 
 
 def wake_up(update, context):
-    """Отправка сообщения и фотографии при запуске бота."""
+    """Приветственное сообщение при запуске бота.
+
+    Отправляет приветственное сообщение и новое случайное изображение кота
+    при запуске бота.
+
+    Args:
+        update (:class:`telegram.Update`): Объект, представляющий
+            входящее обновление.
+        context (:class:`telegram.ext.CallbackContext`): Контекст,
+            предоставляющий информацию и методы для взаимодействия
+            с Telegram API.
+    """
     chat = update.effective_chat
     name = update.message.chat.first_name
     button = ReplyKeyboardMarkup([['/newcat']], resize_keyboard=True)
