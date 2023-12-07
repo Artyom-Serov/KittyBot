@@ -72,7 +72,7 @@ def wake_up(update, context):
     """
     chat = update.effective_chat
     name = update.message.chat.first_name
-    button = ReplyKeyboardMarkup([['/newcat']], resize_keyboard=True)
+    button = ReplyKeyboardMarkup([['Показать фото котика']], resize_keyboard=True)
 
     context.bot.send_message(
         chat_id=chat.id,
