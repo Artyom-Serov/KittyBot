@@ -6,7 +6,7 @@ import os
 import requests
 
 from telegram import ReplyKeyboardMarkup
-from telegram.ext import CommandHandler, Updater
+from telegram.ext import CommandHandler, Updater, MessageHandler, Filters
 
 from dotenv import load_dotenv
 
@@ -72,7 +72,7 @@ def wake_up(update, context):
     """
     chat = update.effective_chat
     name = update.message.chat.first_name
-    button = ReplyKeyboardMarkup([['Показать фото котика']], resize_keyboard=True)
+    button = ReplyKeyboardMarkup([['Новый котик']], resize_keyboard=True)
 
     context.bot.send_message(
         chat_id=chat.id,
@@ -89,6 +89,8 @@ def main():
 
     updater.dispatcher.add_handler(CommandHandler('start', wake_up))
     updater.dispatcher.add_handler(CommandHandler('newcat', new_cat))
+    updater.dispatcher.add_handler(
+        MessageHandler(Filters.regex('Новый котик'), new_cat))
 
     updater.start_polling()
     updater.idle()
