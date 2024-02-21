@@ -1,5 +1,5 @@
 """Telegram-бот для получения случайного изображения кота."""
-
+import daemon
 import logging
 import os
 
@@ -85,15 +85,16 @@ def wake_up(update, context):
 
 def main():
     """Главная функция."""
-    updater = Updater(token=secret_token)
+    with daemon.DaemonContext():
+        updater = Updater(token=secret_token)
 
-    updater.dispatcher.add_handler(CommandHandler('start', wake_up))
-    updater.dispatcher.add_handler(CommandHandler('newcat', new_cat))
-    updater.dispatcher.add_handler(
-        MessageHandler(Filters.regex('Новый котик'), new_cat))
+        updater.dispatcher.add_handler(CommandHandler('start', wake_up))
+        updater.dispatcher.add_handler(CommandHandler('newcat', new_cat))
+        updater.dispatcher.add_handler(
+            MessageHandler(Filters.regex('Новый котик'), new_cat))
 
-    updater.start_polling()
-    updater.idle()
+        updater.start_polling()
+        updater.idle()
 
 
 if __name__ == '__main__':
